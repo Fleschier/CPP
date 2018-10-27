@@ -1,0 +1,8 @@
+Object No.1(Alice)	created.	Totally 1 object(s) available.
+Object No.2(Mike)	created.	Totally 2 object(s) available.
+Object No.3(Tom)	created.	Totally 3 object(s) available.
+Object No.2(Mike)	removed.	Totally 2 object(s) left.
+Object No.3(No Name)	created.	Totally 3 object(s) available.
+Object No.3(Tom)	removed.	Totally 2 object(s) left.
+Object No.3(No Name)	removed.	Totally 1 object(s) left.
+Object No.1(Alice)	removed.	Totally 0 object(s) left.

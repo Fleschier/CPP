@@ -30,3 +30,19 @@
 *.exe
 *.out
 *.app
+
+# VS extra
+*.sln
+*.obj
+*.ilk
+*.pdb
+*.vcxproj
+*.vcxproj.filters
+*.log
+*.tlog
+*.idb
+*.iobj
+*.ipdb
+
+#includes
+! *.cpp
