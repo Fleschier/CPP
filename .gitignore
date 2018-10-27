@@ -32,17 +32,13 @@
 *.app
 
 # VS extra
+Debug/
+x86/
+x64/
 *.sln
-*.obj
-*.ilk
-*.pdb
 *.vcxproj
 *.vcxproj.filters
-*.log
-*.tlog
-*.idb
-*.iobj
-*.ipdb
+
 
 #includes
 ! *.cpp
