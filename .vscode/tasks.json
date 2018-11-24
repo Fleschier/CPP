@@ -1,0 +1,21 @@
+{  
+    "version": "0.1.0",  
+    "showOutput": "always",  
+    "tasks": [
+        {
+            "taskName": "build",
+            "command": "g++",
+            "isShellCommand": true,
+            "showOutput": "always",
+            "args": [
+                "-g",
+                "${file}",
+                "-o",
+                "${workspaceRoot}/CPP/${fileBasenameNoExtension}.o"
+            ],
+            "problemMatcher": [
+                "$g++"
+            ]
+        }
+    ]  
+}

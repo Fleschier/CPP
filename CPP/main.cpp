@@ -15,5 +15,6 @@ class test{
 int main() {
     test a1 = test(2,3);
     cout << "Hello, world!\n";
+    cout<<a1.a<<" "<<a1.b<<endl;
     return 0;
 }
