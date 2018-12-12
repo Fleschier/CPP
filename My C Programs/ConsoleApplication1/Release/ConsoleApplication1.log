@@ -1,0 +1,8 @@
+﻿  book instance 001.c
+book instance 001.c(138): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+  正在生成代码
+  1 of 7 functions (14.3%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    0 functions had inline decision re-evaluated but remain unchanged
+  已完成代码的生成
+  ConsoleApplication1.vcxproj -> D:\cyx\My c programs\ConsoleApplication1\Release\ConsoleApplication1.exe
