@@ -8,6 +8,7 @@
 
 using namespace std;
 
+//复数类
 class Complex {
 public:
 	Complex() {};
@@ -49,6 +50,7 @@ private:
 	double _image;
 };
 
+//辅助函数
 Complex omega(int n, int k);		//单位复数根的表达式求解
 vector<Complex>RecursiveFFT(vector<Complex> &a);		//FFT变换
 vector<Complex>RecursiveIFFT(vector<Complex> &a);		//逆向FFT变换
@@ -64,87 +66,10 @@ int conversion(char a[], int len_a, char res[], int para);	//将一个长度不是2的幂
 int compensation(int n);//根据n补齐到对应的2的次幂
 void BigNumMultiply(vector<int> src, char res[]);	//从卷积Vector转化为结果的字符数组
 
-
+//LeetCode入口类
 class Solution {
 public:
-	string multiply(string s1, string s2) {
-
-		if (s1 == "0" || s2 == "0") return "0";
-
-		//store the big number via char array
-		char tnum1[MAX_LEN] = { 0 };
-		for (int i = 0; i< s1.length(); i++) {
-			tnum1[i] = s1[i];
-		}
-		char tnum2[MAX_LEN] = { 0 };
-		for (int i = 0; i < s2.length(); i++) {
-			tnum2[i] = s2[i];
-		}
-
-		char num1[MAX_LEN] = { 0 };
-		char num2[MAX_LEN] = { 0 };
-
-		//预处理，如果两个数不等长，则将较长的数先补齐到2的幂的长度，再将较短的补齐到与较长的等长
-		int len_tnum1 = strlen(tnum1);
-		int len_tnum2 = strlen(tnum2);
-		if (len_tnum1 > len_tnum2) {
-			int tmp = conversion(tnum1, len_tnum1, num1, 0);
-			conversion(tnum2, len_tnum2, num2, tmp);
-		}
-		else {
-			int tmp = conversion(tnum2, len_tnum2, num2, 0);
-			conversion(tnum1, len_tnum1, num1, tmp);
-		}
-
-		//位数拓展，从n拓展到2n(n为2的幂)
-		int length = strlen(num1);
-		for (int i = 0; i < length; i++) {	//0 ---> length - 1
-											//在前面填充'0'，变为2n
-			num1[length + i] = num1[i];
-			num1[i] = '0';
-			num2[length + i] = num2[i];
-			num2[i] = '0';
-		}
-
-		//转化为复数向量
-		vector<Complex> num_vec1 = toComplex(num1);
-		vector<Complex> num_vec2 = toComplex(num2);
-
-		//分别求两个数的点值表示
-		vector<Complex> num1_FFT = RecursiveFFT(num_vec1);
-		vector<Complex> num2_FFT = RecursiveFFT(num_vec2);
-
-		//在点值表示下求两个数的积
-		vector<Complex> res_FFT = Vec_multi(num1_FFT, num2_FFT);
-
-		//逆向FFT求得卷积
-		vector<Complex> result = RecursiveIFFT(res_FFT);
-
-		//卷积
-		vector<int> intVec = toIntVec(result);
-		char bignum_res[MAX_LEN] = { 0 };
-		BigNumMultiply(intVec, bignum_res);
-
-
-		int len = strlen(bignum_res);
-		int begin = -1;
-		for (int i = 0; i < len; i++) {		//找到第一位非0位的index
-			if (bignum_res[i] != '0') {
-				begin = i;
-				break;
-			}
-		}
-		int idx = 0;
-		char aaaa[MAX_LEN] = { 0 };
-		for (int i = begin; i < len; i++) {
-			//fortest.insert(idx, 1, bignum_res[i]);
-			aaaa[idx] = bignum_res[i];
-			idx++;
-		}
-		string fortest = aaaa;
-
-		return fortest;
-	}
+	string multiply(string s1, string s2);			//输入两个数字字符串，输出结果字符串
 };
 
 int main() {
@@ -154,6 +79,85 @@ int main() {
 	cin >> s2;
 	cout << test.multiply(s1, s2) <<  endl;
 	return 0;
+}
+
+string Solution::multiply(string s1, string s2) {
+
+	if (s1 == "0" || s2 == "0") return "0";
+
+	//store the big number via char array
+	char tnum1[MAX_LEN] = { 0 };
+	for (int i = 0; i< s1.length(); i++) {
+		tnum1[i] = s1[i];
+	}
+	char tnum2[MAX_LEN] = { 0 };
+	for (int i = 0; i < s2.length(); i++) {
+		tnum2[i] = s2[i];
+	}
+
+	char num1[MAX_LEN] = { 0 };
+	char num2[MAX_LEN] = { 0 };
+
+	//预处理，如果两个数不等长，则将较长的数先补齐到2的幂的长度，再将较短的补齐到与较长的等长
+	int len_tnum1 = strlen(tnum1);
+	int len_tnum2 = strlen(tnum2);
+	if (len_tnum1 > len_tnum2) {
+		int tmp = conversion(tnum1, len_tnum1, num1, 0);
+		conversion(tnum2, len_tnum2, num2, tmp);
+	}
+	else {
+		int tmp = conversion(tnum2, len_tnum2, num2, 0);
+		conversion(tnum1, len_tnum1, num1, tmp);
+	}
+
+	//位数拓展，从n拓展到2n(n为2的幂)
+	int length = strlen(num1);
+	for (int i = 0; i < length; i++) {	//0 ---> length - 1
+										//在前面填充'0'，变为2n
+		num1[length + i] = num1[i];
+		num1[i] = '0';
+		num2[length + i] = num2[i];
+		num2[i] = '0';
+	}
+
+	//转化为复数向量
+	vector<Complex> num_vec1 = toComplex(num1);
+	vector<Complex> num_vec2 = toComplex(num2);
+
+	//分别求两个数的点值表示
+	vector<Complex> num1_FFT = RecursiveFFT(num_vec1);
+	vector<Complex> num2_FFT = RecursiveFFT(num_vec2);
+
+	//在点值表示下求两个数的积
+	vector<Complex> res_FFT = Vec_multi(num1_FFT, num2_FFT);
+
+	//逆向FFT求得卷积
+	vector<Complex> result = RecursiveIFFT(res_FFT);
+
+	//卷积
+	vector<int> intVec = toIntVec(result);
+	char bignum_res[MAX_LEN] = { 0 };
+	BigNumMultiply(intVec, bignum_res);
+
+
+	int len = strlen(bignum_res);
+	int begin = -1;
+	for (int i = 0; i < len; i++) {		//找到第一位非0位的index
+		if (bignum_res[i] != '0') {
+			begin = i;
+			break;
+		}
+	}
+	int idx = 0;
+	char aaaa[MAX_LEN] = { 0 };
+	for (int i = begin; i < len; i++) {
+		//fortest.insert(idx, 1, bignum_res[i]);
+		aaaa[idx] = bignum_res[i];
+		idx++;
+	}
+	string fortest = aaaa;
+
+	return fortest;
 }
 
 
